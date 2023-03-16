@@ -4,7 +4,7 @@
 
 Dentro de los diferentes protocolos ([link](https://learn.adafruit.com/alltheiot-protocols)) usados en la industria IoT, el protocolo **MQTT (Message Queue Telemetry Transport)** ([link](https://mqtt.org/)) se ha convertido en uno de los mas populares. El protocolo MQTT (Message Queuing Telemetry Transport) es un protocolo diseñado para transferir mensajes mediante el uso de un modelo **publish and subscribe**. Mediante este modelo, es posible enviar mensajes a 0, 1 o multiples clientes.
 
-![mqtt_adafruit]_(https://cdn-learn.adafruit.com/assets/assets/000/049/298/medium800/customer___partner_projects_adafruit_io_complexmqtt.png?1513278997)
+![mqtt_adafruit](https://cdn-learn.adafruit.com/assets/assets/000/049/298/medium800/customer___partner_projects_adafruit_io_complexmqtt.png?1513278997)
 
 Para permitir la comunicación entre los diferentes dispositivos, MQTT requiere del uso de un Broker central (tal y como se muestra en la figura de abajo (tomada de [link](https://learn.sparkfun.com/tutorials/introduction-to-mqtt/all))):
 
