@@ -33,8 +33,6 @@ El código fue tomado de la siguiente [página](https://github.com/jilopezv/IoT/
 
 Para comprender el funcionamiento de los archivos [config.h](PIR_MQTT_esp32/config.h), [ESP32_Utils.hpp](PIR_MQTT_esp32/ESP32_Utils.hpp), [ESP32_Utils_MQTT.hpp](PIR_MQTT_esp32/ESP32_Utils_MQTT.hpp), [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp) se recomienda que consulte la pagina **CÓMO USAR MQTT EN EL ESP8266/ESP32** ([link](https://www.luisllamas.es/como-usar-mqtt-en-el-esp8266-esp32/)) pues estos archivos se adaptaron de esta pagina. 
 
-**Archivos que requieren ser analizados con mas detalle**
-
 A continuación se muestra el archivo [PIR_MQTT_esp32.ino](PIR_MQTT_esp32/PIR_MQTT_esp32.ino) que es el que implementa la logica de la cosa de acuerdo a la descripción:
 
 ```ino
@@ -126,14 +124,62 @@ Antes de adaptar la plantilla a nuestro ejemplo, es necesario conocer la informa
 |SSID AP|Elegir el access point de la red|
 |Pasword AP|Consultar el password del access point o dejar el valor vacio si no tiene|
 
-La configuración del broker se lleva a cabo modificando la variable asociada a la IP donde se esta ejecutando el broker (```MQTT_BROKER_ADRESS```) en el archivo [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp):
-
+La configuración del broker se lleva a cabo modificando la variable asociada a la IP donde se esta ejecutando el broker (```MQTT_BROKER_ADRESS```) en el archivo [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp). Este archivo es sumamente importante pues aqui se lleva a cabo la implementación de la función de suscripción del cliente (SuscribeMqtt()) a un topico determinado (En este caso Motion/2) y se implementa la logica de recepción de un comando para la activación o desactivación del **modo alarma** en la función ```OnMqttReceived()```. A continuación se muestra este archivo completamente:
 
 ```hpp
-const char* MQTT_BROKER_ADRESS = "mqtt_broker_IP"; // Ejemplo 192.169.1.4
+const char* MQTT_BROKER_ADRESS = "192.168.1.4";
 const uint16_t MQTT_PORT = 1883;
 const char* MQTT_CLIENT_NAME = "ESPClient_2";
-...
+
+extern char home_state;
+
+// Topics
+const char* DEVICE_TYPE = "Movement";
+const char* DEVICE_ID = "3";
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
+
+char topic_sub[100];
+
+void SuscribeMqtt() {
+  sprintf(topic_sub,"%s/%s", DEVICE_TYPE, DEVICE_ID);
+  mqttClient.subscribe(topic_sub);
+}
+
+String payload;
+
+void PublisMqtt(char* topic, unsigned long data) {
+   payload = "";
+   payload = String(data);
+   mqttClient.publish(topic, (char*)payload.c_str());
+}
+
+void PublisMqttString(char* topic, char* msg) {
+   mqttClient.publish(topic, msg);
+}
+
+String content = "";
+
+void OnMqttReceived(char* topic, byte* payload, unsigned int length) {
+   Serial.print("Received on ");
+   Serial.print(topic);
+   Serial.print(": ");
+
+   content = "";   
+   for (size_t i = 0; i < length; i++) {
+      content.concat((char)payload[i]);
+   }
+   Serial.print(content);
+   Serial.println();
+
+   //If payload is "1", change sensor state to lookout
+   if ((char)payload[0]=='1')
+     home_state = 1; // Set sensor state ->  1 lookout
+   else
+     home_state = 0; // Clear sensor state ->  0 normal
+}
 ```
 
 Por otro lado en el archivo [config.h](PIR_MQTT_esp32/config.h), se configura la información asociada al access point y al ... (preguntar que es la IP de lo otro).

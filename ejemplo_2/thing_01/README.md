@@ -1,5 +1,12 @@
 # ESP32 - Temperatura
 
+## Antes de empezar
+
+Antes de empezar la implementación de este ejemplo es necesario que en el Arduino IDE se tengan instaladas las siguientes librerias (Para mas claridad en el proceso, consulte la sección **Installing Libraries** del tutorial **ESP32 DS18B20 Temperature Sensor with Arduino IDE (Single, Multiple, Web Server)** ([link](https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/)):
+1. **One Wire library** de Paul Stoffregen ([link](https://github.com/PaulStoffregen/OneWire))
+2. **Dallas Temperature library** ([link](https://github.com/PaulStoffregen/OneWire))
+
+
 ## Descripción
 
 La siguiente cosa (implementada en una placa ESP32) realiza las siguientes dos tareas:
@@ -276,7 +283,7 @@ A continuación se muestra el orden de las pruebas realizado:
 * https://www.analog.com/media/en/technical-documentation/data-sheets/ds18b20.pdf
 * https://randomnerdtutorials.com/guide-for-ds18b20-temperature-sensor-with-arduino/
 * https://arduinomodules.info/ky-001-temperature-sensor-module/
-* https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/#:~:text=Introducing%20DS18B20%20Temperature%20Sensor,to%20communicate%20with%20your%20ESP32
+* https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/
 * https://fluxworkshop.com/blogs/getting-started/lets-workshop-lc-technology-rw1820-temperature-sensor-module
 * Sensor es el de la pagina 72 del libro de elegoo.
 
