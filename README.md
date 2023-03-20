@@ -373,6 +373,32 @@ Si todo esta bien, el led de la placa ESP32 se deben encender y apagar; asi mism
 
 ![monitor_serial2](monitor_serial2.png)
 
+## Ejemplos de aplicación
+
+### Ejemplo 1 - Control de la luz de una oficina
+
+Control de encendido y apagado de luz empleando MQTT ([link ejemplo 1](ejemplo_1/README.md)).
+
+![interfaz](interfaz_mqtt.png)
+
+### Ejemplo 2 - Smart Home 
+
+Interfaz grafica para el monitoreo y control de un hogar. El repo principal con el modelo actualizado se encuentra en el siguiente [link](https://github.com/jilopezv/IoT/tree/newModel). La arquitectura que se implementa aqui es la mostrada en la siguiente figura:
+
+![arquitectura](arquitectura.jpg)
+
+En esta ejemplo solo se aborda una pequeña parte de este proyecto la cual es puede encontrar en el [link ejemplo 2](ejemplo_2/README.md).
+
+La interfaz de la casa completa (con algunas funciones deshabilidatas de muestra a continuación)
+
+![main_ui](main_ui.png)
+
+La interfaz de la sala se muestra a continuación:
+
+![living-room_ui](living-room_ui.png)
+
+> **Nota**
+> Todo esto, aun se encuentra en construcción. Disculpas por las molestias causadas...
 
 ## Referencias
 
