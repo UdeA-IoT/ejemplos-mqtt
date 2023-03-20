@@ -84,8 +84,16 @@ La aplicación se conectara mediante el serial enviando dos comandos basicos env
 
 El procedimiento de desarrollo de la aplicación seguira tres pasos basicos los cuales son:
 1. Implementación y pruebas del firmware que se encargara del implementara la logica de la **cosa** ([link](mqtt_paso1/)).
+   
+   ![](serial_terminal_esp32.png)
+
 2. Desarrollo y test de una aplicación de escritorio sencilla en un lenguaje de programación (python en nuestro caso). Esta aplicación será por consola. se implementará una aplicación de escritorio igualmente sencilla, pero esta sera grafica ([link](mqtt_paso2/)).
+   
+   ![](app_hardware-terminal.png)
+
 3. Desarrollo de una aplicación grafica para el control de la **cosa**. Esta aplicación implementará, aunque de manera muy sencilla el concepto de IoT al hacer uso del protocolo MQTT para el envio de comandos a la cosa ([link](mqtt_paso3/)).
+   
+    ![](app_hardware-ui.png)
 
 ## Referencias
 
