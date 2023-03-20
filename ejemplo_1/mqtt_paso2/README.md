@@ -74,7 +74,7 @@ El software que se descarga al ESP32 no cambia para nada tampoco. La siguiente t
 A continuación se muestra el software del ESP32 (no olvidar configurar los parametros del programa de acuerdo a los de su red local):
 
 ```ino
-
+/***************************************************************************************
 MQTT_Light_Example.ino
 Example for controlling a light using MQTT
 by: Alex Wende, SparkFun Electronics
@@ -82,7 +82,7 @@ by: Alex Wende, SparkFun Electronics
 This sketch connects the ESP32 Thing Plus to a MQTT broker and subcribes to the topic
 room/light. When "on" is recieved, the pin LIGHT_PIN is set HIGH.
 When "off" is recieved, the pin LIGHT_PIN is set LOW.
-******************************************************************************/
+****************************************************************************************/
 
 #include <WiFi.h>
 #include <PubSubClient.h>
