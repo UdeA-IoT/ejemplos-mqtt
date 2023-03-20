@@ -1,19 +1,5 @@
 # Paso 1 - Implentacion del programa en la plataforma
 
-## Requisitos previos
-
-Antes de empezar debe instalar las librerias para poder conectar los microcontroladores ESP8266/ESP32 usando MQTT ([EspMQTTClient](https://www.arduino.cc/reference/en/libraries/espmqttclient/)), el repositorio de esta libreria se encuentra en el siguiente [link](https://github.com/plapointe6/EspMQTTClient).
-
-Para llevar a cabo la instalación de esta libreria se siguen los siguientes pasos (ver: **Installing an Arduino Library** ([link](https://learn.sparkfun.com/tutorials/installing-an-arduino-library/all#using-the-arduino-library-manager))):
-1. Abra el administrador de librerias: **Sketch -> Include Library -> Manage Libraries... ->**
-2. Digite en el campo de busqueda la palabra clave **pubsub**, seleccione la libreria **EspMQTTClient** e instalela:
-   
-   ![select_lib](mqtt_arduino.png)
-
-3. Como esta libreria depende se otras dependencias, acepte la opcion que permite la instalación de todas las librerias (**Install All**) incluyendo las dependencias:
-   
-   ![lib_dep](mqtt_arduino2.png)
-
 ## Hardware
 
 ### Lista de componentes
