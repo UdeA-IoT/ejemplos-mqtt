@@ -1,41 +1,10 @@
 # Interfaz grafica
 
-
 ## Prerequisitos
 
 ## Instalación del entorno virtual
 
-Inicialmente, se va a declarar un entorno virtual de desarrollo en python para ejecutar....
-
-
-La proxima, teniendo en cuenta el archivo requeriments solo es necesario realizar el siguiente procedimiento:
-
-```
-python -m venv mqtt_env
-.\mqtt_env\Scripts\activate # Windows
-pip freeze > requirements.txt
-deactivate
-```
-
-```
-python -m venv mqtt_env
-.\mqtt_env\Scripts\activate # Windows
-pip install paho-mqtt
-pip install pyserial
-pip install "kivy[base]" kivy_examples
-pip install kivymd
-pip install python-dotenv
-```
-
-
-
-Luego se uso el comando:
-
-```
-pip freeze > requirements.txt
-```
-
-El arhivo requeriments queda como:
+En este caso, ya se dispone de un archivo **requirements.txt** cuyo contenido es el siguiente:
 
 ```
 certifi==2022.12.7
@@ -48,7 +17,6 @@ kivy-deps.glew==0.3.1
 kivy-deps.sdl2==0.4.5
 Kivy-examples==2.1.0
 Kivy-Garden==0.1.5
-kivymd==1.1.1
 paho-mqtt==1.6.1
 Pillow==9.4.0
 Pygments==2.14.0
@@ -60,31 +28,26 @@ requests==2.28.2
 urllib3==1.26.15
 ```
 
-Se trabaja y al final para salir del entorno tenemos:
+La ventaja de tener este archivo es que la instalación de todos los prerequisitos se hace mas facil pues nos ahorramos la ejecución de los comandos pip install intividuales:
 
 ```
-deactivate
-```
-
-Volviendo a trabajar la proxima tenemos:
-
-```
-# Activar
+python -m venv mqtt_env
 .\mqtt_env\Scripts\activate # Windows
-
-# Hacer cosas
-
-# Salir
-deactivate
+# source mqtt_env/bin/activate # Linux
+pip install -r requirements.txt
 ```
 
-Probando kyvi:
+De alli en adelante se procede a trabajar en el desarrollo como siempre y cuando vamos a salirnos lo hacemos ejecutando el comando:
 
-```
-py .\mqtt_env\share\kivy-examples\demo\showcase\main.py
-```
+## Ejemplo a montar
 
+### Interfaz casa
 
+![main_ui](main_ui.png)
+
+### Interfaz sala
+
+![living-room_ui](living-room_ui.png)
 
 ## Referencias
 
@@ -93,6 +56,4 @@ py .\mqtt_env\share\kivy-examples\demo\showcase\main.py
 * https://pythonbasics.org/virtualenv/
 * https://realpython.com/python-virtual-environments-a-primer/
 * https://learn.microsoft.com/es-es/windows/dev-environment/
-
-
 
