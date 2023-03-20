@@ -31,10 +31,11 @@ El código fue tomado de la siguiente [página](https://github.com/jilopezv/IoT/
 * [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp)
 * [PIR_MQTT_esp32.ino](PIR_MQTT_esp32/PIR_MQTT_esp32.ino)
 
-Para comprender el funcionamiento de los archivos [config.h](PIR_MQTT_esp32/config.h), [ESP32_Utils.hpp](PIR_MQTT_esp32/ESP32_Utils.hpp), [ESP32_Utils_MQTT.hpp](PIR_MQTT_esp32/ESP32_Utils_MQTT.hpp), [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp) se recomienda que consulte la pagina **CÓMO USAR MQTT EN EL ESP8266/ESP32** ([link](https://www.luisllamas.es/como-usar-mqtt-en-el-esp8266-esp32/)) pues estos archivos se adaptaron de esta pagina.
+Para comprender el funcionamiento de los archivos [config.h](PIR_MQTT_esp32/config.h), [ESP32_Utils.hpp](PIR_MQTT_esp32/ESP32_Utils.hpp), [ESP32_Utils_MQTT.hpp](PIR_MQTT_esp32/ESP32_Utils_MQTT.hpp), [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp) se recomienda que consulte la pagina **CÓMO USAR MQTT EN EL ESP8266/ESP32** ([link](https://www.luisllamas.es/como-usar-mqtt-en-el-esp8266-esp32/)) pues estos archivos se adaptaron de esta pagina. 
+
+**Archivos que requieren ser analizados con mas detalle**
 
 A continuación se muestra el archivo [PIR_MQTT_esp32.ino](PIR_MQTT_esp32/PIR_MQTT_esp32.ino) que es el que implementa la logica de la cosa de acuerdo a la descripción:
-
 
 ```ino
 /* ----- Include Libraries ----- */
@@ -162,7 +163,7 @@ Para realizar la prueba vamos a emplear los clientes **```mosquitto_pub```** y *
 | Dispositivo | Aplicación |Rol|Topic (message-topic)|Mensaje (message)|Observaciones|Comando empleado|
 |---|---|---|---|---|---|---|
 | Computador |Cliente ```mosquitto_pub```|publisher| ```Movement/3```|Comandos enviados: <ul><li> **```1```**: Modo vigia <li> **```0```**: Modo normal </ul> |Estos comandos se envian al cliente que suscribe en el ESP32 activando o desactivando en este el modo vigia o modo normal|Comandos enviados desde la consola: <ul> <li>```mosquitto_pub -t Movement/3 -m 0```<li>```mosquitto_pub -t Movement/3 -m 1```</ul>|
-|Computador |Cliente ```mosquitto_sub```|susbcriber|```home```|```---```| En la consola de este cliente se imprimiran los mensajes enviados desde el cliente que publica en el ESP32. Ma especificamente, los comandos mostrados serán: ```3,1```, ```3,alarm``` y ```3,100```||
+|Computador |Cliente ```mosquitto_sub```|susbcriber|```home```|```---```| En la consola de este cliente se imprimiran los mensajes enviados desde el cliente que publica en el ESP32. Ma especificamente, los comandos mostrados serán: ```3,1```, ```3,alarm``` y ```3,100```|Comando ejecutado: <br>```mosquitto_sub -t home```|
 
 Antes de empezar no olvide abrir la terminal que va a suscribir a ```home``` el comando ```mosquitto_sub -t home``` tal y como se muestra a continuación:
 
