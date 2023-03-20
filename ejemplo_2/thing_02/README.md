@@ -2,7 +2,9 @@
 
 ## Descripción
 
+El siguiente código permite la activación de una alarma que usa un **sensor PIR HC-SR501** para detectar presencia. La alarma puede ser activada o desactivada de acuerdo al modo de funcionamiento que se configura mediante el envio de un comando usando protocolo MQTT. Asi mismo, cuando una persona es detectada, la alarma, si la alarma ha sido activada, esta informa la presencia enviando un mensaje a los elementos interesados dentro de la red MQTT a la cual pertenece.
 
+La siguiente tabla muestra los diferentes clientes y su rol que permiten la integración de la alarma en la red MQTT:
 
 | ID Dispositivo | Nombre |Rol|Topic (message-topic)|Mensaje (message)|Observaciones|
 |---|---|---|---|---|---|
@@ -21,6 +23,18 @@ El hardware se muestra a continuación:
 ![PIR](PIR_MQTT_esp32_bb.png)
 
 ## Codigo 
+
+El código fue tomado de la siguiente [página](https://github.com/jilopezv/IoT/tree/newModel/things-arduino/PIR_MQTT_esp32). Como se puede observar, el codigo completo de la aplicación se compone (a diferencia de los que se han analizado previamente) de varios archivos los cuales se listan a continuación:
+* [config.h](PIR_MQTT_esp32/config.h)
+* [ESP32_Utils.hpp](PIR_MQTT_esp32/ESP32_Utils.hpp)
+* [ESP32_Utils_MQTT.hpp](PIR_MQTT_esp32/ESP32_Utils_MQTT.hpp)
+* [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp)
+* [PIR_MQTT_esp32.ino](PIR_MQTT_esp32/PIR_MQTT_esp32.ino)
+
+Para comprender el funcionamiento de los archivos [config.h](PIR_MQTT_esp32/config.h), [ESP32_Utils.hpp](PIR_MQTT_esp32/ESP32_Utils.hpp), [ESP32_Utils_MQTT.hpp](PIR_MQTT_esp32/ESP32_Utils_MQTT.hpp), [MQTT.hpp](PIR_MQTT_esp32/MQTT.hpp) se recomienda que consulte la pagina **CÓMO USAR MQTT EN EL ESP8266/ESP32** ([link](https://www.luisllamas.es/como-usar-mqtt-en-el-esp8266-esp32/)) pues estos archivos se adaptaron de esta pagina.
+
+A continuación se muestra el archivo [PIR_MQTT_esp32.ino](PIR_MQTT_esp32/PIR_MQTT_esp32.ino) que es el que implementa la logica de la cosa de acuerdo a la descripción:
+
 
 ```ino
 /* ----- Include Libraries ----- */
@@ -139,38 +153,48 @@ Una vez hecho esto, ya es posible descargar el codigo en la ESP32. Si todo esta 
 
 ## Pruebas
 
-En la tabla mostrada al principio, vimos que en el ESP32 se implementaron a continuación se describe el plan de prueba.
+En la tabla mostrada al principio, vimos que en el ESP32 se implementaron un cliente que suscribia y uno que publicaba de modo que los objetivos de la prueba de test serán:
+* Verificar que los mesajes que se estan publicando desde la ESP32 esten de acuerdo con la logica descrita en la tabla para el cliente que publica.
+* Verificar, que el comportamiento del ESP32 responde de acuerdo con los requerimientos de la aplicación cuando este recibe el mensaje MQTT con el comando para configurar el modo de operación como alarma. Para esto se revisara que el cliente que suscribe en el ESP32 funcione adecuadamente al recibir un comando desde un cliente externo que publica.
 
-### Verificar que se esta enviando desde la información asociada al sensor PIR.
+Para realizar la prueba vamos a emplear los clientes **```mosquitto_pub```** y **```mosquitto_sub```** teniendo en cuenta que el broker **```mosquitto```** ha sido previamente iniciado. La siguiente tabla muestra los clientes implementados mediante los clientes mosquitto:
 
-1. Normal
+| Dispositivo | Aplicación |Rol|Topic (message-topic)|Mensaje (message)|Observaciones|Comando empleado|
+|---|---|---|---|---|---|---|
+| Computador |Cliente ```mosquitto_pub```|publisher| ```Movement/3```|Comandos enviados: <ul><li> **```1```**: Modo vigia <li> **```0```**: Modo normal </ul> |Estos comandos se envian al cliente que suscribe en el ESP32 activando o desactivando en este el modo vigia o modo normal|Comandos enviados desde la consola: <ul> <li>```mosquitto_pub -t Movement/3 -m 0```<li>```mosquitto_pub -t Movement/3 -m 1```</ul>|
+|Computador |Cliente ```mosquitto_sub```|susbcriber|```home```|```---```| En la consola de este cliente se imprimiran los mensajes enviados desde el cliente que publica en el ESP32. Ma especificamente, los comandos mostrados serán: ```3,1```, ```3,alarm``` y ```3,100```||
 
-En estado normal, el ESP32 publica al **```topic = Motion/3```** los mensajes **```3,1```** y **```3,100```**. Esto se muestran en la terminal serial del ESP32 asi:
+Antes de empezar no olvide abrir la terminal que va a suscribir a ```home``` el comando ```mosquitto_sub -t home``` tal y como se muestra a continuación:
 
-![](figuras/2_esp32_serial2.png)
+![fig0_mosquitto_sub](figuras/0_mosquitto_sub.png)
 
-En la consola de un cliente mosquito como suscriptor sale
+A continuación se muestra el orden de las pruebas realizado:
 
-![](figuras/3_mosquitto_sub_1.png)
+1. Se verificó el estado de operación **normal** del ESP32. En este caso el ESP32 publica al topico **```home```** los mensajes **```3,1```** y **```3,100```** lo cual se evidencia en la terminal serial del ESP32:
 
+   ![fig1_serial_ESP32](figuras/2_esp32_serial2.png)
+   
+   Si todo esta bien, estos mensajes se deben desplegar en la consola del ```mosquitto_sub``` asociada a este topico como se muestra a continuación:
 
-2. Alarma
+   ![fig2_mosquitto_sub](figuras/3_mosquitto_sub_1.png)
 
-![](figuras/4_mosquitto_pub_1.png)
+2. Se realizo la prueba de activación del **modo alarma**, para esto, se envio desde la terminal del **mosquito_pub** el mensaje con comando (```1```) para activar este modo al topico ```Motion/3``` tal y como se muestra en la siguiente figura:
+   
+   ![fig3_mosquitto_pub](figuras/4_mosquitto_pub_1.png)
 
-El resultado se muestra en:
+   El efecto en el ESP32, es el cambio en lo que se imprime en consola serial tal y como se muestra en la siguiente figura:
+   
+   ![fig4_serial_ESP32](figuras/2_esp32_serial3.png)
 
-![](figuras/2_esp32_serial3.png)
+   Notese de la figura anterior, que ya el ESP32 publica al topic ```home``` el mensaje que indica el estado de alarma ```3,alarm```. En la siguiente figura, se puede apreciar que en efecto el mensaje que recibe la consola **mosquitto_sub** muestra que el mensaje ha cambiado de ```3,1``` (lo que habia antes) a ```3,alarm``` (Mensaje de indicación de alarma).
+   
+   ![fig5_mosquitto_sub](figuras/5_mosquitto_sub_2.png)
 
-![](figuras/5_mosquitto_sub_2.png)
-
-3. Alarma Off
-
-![](figuras/6_mosquitto_pub_2.png)
-
-El resultado sera nuevamente similar a lcaso normal, a continuación muestra el resultaso en la consola del mosquito...
-
-![](figuras/3_mosquitto_sub_1.png)
-
-Aca vamos...
+3. Se realizo la prueba de desactivación del **modo alarma**, para esto, se envio desde la terminal del **mosquito_pub** el mensaje con comando ```0``` al topico ```Motion/3``` tal y como se muestra en la siguiente figura:
+   
+   ![fig6_mosquitto_pub](figuras/6_mosquitto_pub_2.png)
+   
+   El resultado sera nuevamente similar al caso normal tal y como se muestra a continuación:
+   
+   ![fig7_mosquitto_sub](figuras/3_mosquitto_sub_1.png)
 
